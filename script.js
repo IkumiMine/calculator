@@ -24,24 +24,31 @@ console.log(input.length);
 //first input is numbers -> push into array
 //second input is nonNumbers -> push into array = array[1]
 //second input is numbers -> combine with first input = array[0]
+//["5"] -> ["5", "1"] -> ["51", "1"] -> ["51"]
+//["5"] -> ["5", "1"] -> ["51", "1"] -> ["51"]
+//["num1", "operator", "num2"]
 keys.forEach((key)=>key.addEventListener("click", ()=>{
-    if(input.length === 0){
-        if(!nonNumbers.includes(key.textContent)){
-            input.push(key.textContent);
-        } else {
+    input.push(key.textContent);
+    if(input.length >= 0 && input.length <= 1){
+        if(nonNumbers.includes(input[0])){
             input = [];
-        }
-    } else {
-        if(!nonNumbers.includes(key.textContent)){
-            input.push(key.textContent);
+        } 
+    } else if (input.length > 1 && input.length <= 2) {
+        if(!nonNumbers.includes(input[1])) {
             input[0] = input[0] + input[1];
             input.pop();
-        } else {
-            input.push(key.textContent);
         }
-    }
+    } else if (input.length > 3 && input.length <= 4) {
+        if(!nonNumbers.includes(input[3])) {
+            input[2] = input[2] + input[3];
+            input.pop();
+        } else if (nonNumbers.includes(input[3])){
+            input[0] = operate(input);
+            input.splice(1,2);
+        }
+    } 
     console.log(input);
-    //previousKeys.textContent = input.join(" ");
+    previousKeys.textContent = input.join(" ");
 }))
 
 equalKey.addEventListener("click", () => {
