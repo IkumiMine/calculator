@@ -10,34 +10,65 @@
     display: flex;
 }
 
-.cal-container {
-    width: 500px;
-    height: 600px;
-    border: 1px solid orange;
+.cal-outside-container {
+    width: 550px;
+    height: 650px;
+    background-color: #deb7ff;
+    border-radius: 8px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+    justify-content: center;
+}
+
+.cal-inside-container {
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    row-gap: 40px;
+    width: 80%;
+    row-gap: 20px;
 }
 
 .screen {
-    width: 85%;
+    width: 100%;
     height: 100px;
-    border: 1px solid black;
+    background-color: #634087;
+    border-radius: 8px;
+    color: #fff;
+    text-align: right;
+    padding: 1rem;
+}
+
+#current-key {
+    font-size: 3rem;
+}
+
+.function-keys {
+    justify-content: space-between;
+    width: 100%;
+    color: #fff;
+    cursor: pointer;
+}
+
+.function-key {
+    background-color: #8549a7;
+    border-radius: 8px;
+    font-size: 2rem;
+    width: 200px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
 }
 
 .keys-container {
-    width: 85%;
+    width: 100%;
 }
 
 .key-left {
     flex-wrap: wrap;
     flex-grow: 3;
-    gap: 20px 35px;
+    gap: 20px 40px;
 }
 
 .key-right {
@@ -48,6 +79,12 @@
 .key {
     width: 80px;
     height: 80px;
-    border: 1px solid red;
+    background-color: #a86add;
+    border-radius: 8px;
     cursor: pointer;
+    color: #fff;
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

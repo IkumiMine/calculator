@@ -8,9 +8,7 @@ const timesKey = document.querySelector("#times");
 const minusKey = document.querySelector("#minus");
 const plusKey = document.querySelector("#plus");
 
-const nonNumbers = [
-    equalKey.textContent,
-    decimalKey.textContent,
+const operators = [
     divideKey.textContent,
     timesKey.textContent,
     minusKey.textContent,
@@ -28,34 +26,37 @@ console.log(input.length);
 //["5"] -> ["5", "1"] -> ["51", "1"] -> ["51"]
 //["num1", "operator", "num2"]
 keys.forEach((key)=>key.addEventListener("click", ()=>{
+
     input.push(key.textContent);
+    
     if(input.length >= 0 && input.length <= 1){
-        if(nonNumbers.includes(input[0])){
+        if(operators.includes(input[0]) || input[0] === equalKey.textContent || input[0] === decimalKey.textContent){
             input = [];
         } 
     } else if (input.length > 1 && input.length <= 2) {
-        if(!nonNumbers.includes(input[1])) {
+        if(!operators.includes(input[1]) && input[1] !== equalKey.textContent ) {
             input[0] = input[0] + input[1];
             input.pop();
         }
     } else if (input.length > 3 && input.length <= 4) {
-        if(!nonNumbers.includes(input[3])) {
+        if(!operators.includes(input[3]) && input[3] !== equalKey.textContent) {
             input[2] = input[2] + input[3];
             input.pop();
-        } else if (nonNumbers.includes(input[3])){
+        } else if (operators.includes(input[3]) || input[3] === equalKey.textContent){
             input[0] = operate(input);
-            input.splice(1,2);
+            input.splice(1,3);
+            currentKey.textContent = input;
         }
     } 
     console.log(input);
     previousKeys.textContent = input.join(" ");
 }))
-
+/*
 equalKey.addEventListener("click", () => {
     console.log(input);
-    currentKey.textContent = operate(input);
+    //currentKey.textContent = ;
 })
-
+*/
 function add(a, b) {
     return a + b;
 }
