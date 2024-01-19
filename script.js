@@ -1,62 +1,93 @@
+//Initialize variables
 const screenInput = document.querySelector("#screen-input");
 const screenResult = document.querySelector("#screen-result");
 const functionClear = document.querySelector("#function-clear");
 const functionDelete = document.querySelector("#function-delete");
 const keys = document.querySelectorAll(".key");
+const numbersNode = document.querySelectorAll('.numbers');
 const equalKey = document.querySelector("#equal");
 const decimalKey = document.querySelector("#decimal");
 const divideKey = document.querySelector("#divide");
 const timesKey = document.querySelector("#times");
 const minusKey = document.querySelector("#minus");
 const plusKey = document.querySelector("#plus");
+
+//operators array
 const operators = [
-    divideKey.textContent,
-    timesKey.textContent,
-    minusKey.textContent,
-    plusKey.textContent
+    divideKey.value,
+    timesKey.value,
+    minusKey.value,
+    plusKey.value
 ]
+
+//numbers array
+const newArray = Array.from(numbersNode);
+const numbers = [];
+newArray.forEach((val) => {
+    numbers.push(val.value);
+})
 
 let input = [];
 
-//first input is nonNumbers -> don't push into array
-//first input is numbers -> push into array
-//second input is nonNumbers -> push into array = array[1]
-//second input is numbers -> combine with first input = array[0]
-//["5"] -> ["5", "1"] -> ["51", "1"] -> ["51"]
-//["5"] -> ["5", "1"] -> ["51", "1"] -> ["51"]
-//["num1", "operator", "num2"]
-keys.forEach((key)=>key.addEventListener("click", ()=>{
+keys.forEach((key) => key.addEventListener("click", ()=>{
 
-    input.push(key.textContent);
+    let val = key.value;
 
-    if(input.length >= 0 && input.length <= 1){
-        if(operators.includes(input[0]) || input[0] === equalKey.textContent || input[0] === decimalKey.textContent){
+    //prevent adding operators, equal and decimal into empty array
+    if(input.length === 0) {
+        if(operators.includes(val) || val === equalKey.value || val === decimalKey.value) {
             input = [];
-        } 
-    } else if (input.length > 1 && input.length <= 2) {
-        if(!operators.includes(input[1]) && input[1] !== equalKey.textContent ) {
-            input[0] = input[0] + input[1];
-            input.pop();
+        } else {
+            input.push(val);
         }
-    } else if (input.length > 3 && input.length <= 4) {
-        if(!operators.includes(input[3]) && input[3] !== equalKey.textContent) {
-            input[2] = input[2] + input[3];
-            input.pop();
-        } else if (operators.includes(input[3]) || input[3] === equalKey.textContent){
-            input[0] = operate(input);
-            input.splice(1,3);
-            screenResult.textContent = input;
+    } else {
+        //add current value into input array
+        input.push(val);
+
+        //edit array depends on the current value (number/decimal/operator/equal)
+        if(input.length === 2){
+            if(numbers.includes(input[1])) {
+                input[0] = input[0] + input[1];
+                input.pop();
+            } else if (input[1] === decimalKey.value) {
+                input[0] = input[0] + input[1];
+                input.pop();
+                decimalKey.disabled = true;
+            } else if (operators.includes(input[1])){
+                decimalKey.disabled = false;
+            }
+        } else if(input.length === 4) {
+            if(numbers.includes(input[3])) {
+                input[2] = input[2] + input[3];
+                input.pop();
+            } else if(input[3] === decimalKey.value){
+                input[2] = input[2] + input[3];
+                input.pop();
+                decimalKey.disabled = true;
+            } else if(operators.includes(input[3])) {
+                input[0] = operate(input);
+                input.splice(1, 2);
+                decimalKey.disabled = false;
+                screenResult.textContent = input[0];
+            } else if(input[3] === equalKey.value){
+                input[0] = operate(input);
+                input.splice(1, 3);
+                decimalKey.disabled = false;
+                screenResult.textContent = input[0]; 
+            }
         }
-    } 
-    console.log(input);
+    }
     screenInput.textContent = input.join(" ");
 }))
 
+//remove all values in array
 functionClear.addEventListener("click", () => {
     input.splice(0, input.length);
     screenInput.textContent = input.join(" ");
+    screenResult.textContent = input;
 })
 
+//remove the last value in array
 functionDelete.addEventListener("click", () => {
 
     const last = input[input.length-1];
@@ -72,42 +103,42 @@ functionDelete.addEventListener("click", () => {
     }
 })
 
-function add(a, b) {
-    return a + b;
+function add(a, b){
+    return a + b
 }
 
-function subtract(a, b) {
-    return a - b;
+function subtract(a, b){
+    return a - b
 }
 
-function multiply(a, b) {
-    return a * b;
+function multiply(a, b){
+    return a * b
 }
 
-function divide(a, b) {
-    return a / b;
+function divide(a, b){
+    return a / b
 }
 
 function operate(array) {
-    let num1 = parseInt(array[0]);
-    let num2 = parseInt(array[2]);
-    let result;
+    let num1, num2, result;
+    num1 = Number(array[0]);
+    num2 = Number(array[2]);
 
     switch (array[1]){
-        case plusKey.textContent:
+        case '+':
             result = add(num1, num2);
             break;
-        case minusKey.textContent:
+        case '-':
             result = subtract(num1, num2);
             break;
-        case timesKey.textContent:
+        case '*':
             result = multiply(num1, num2);
             break;
-        case divideKey.textContent:
+        case '/':
             result = divide(num1, num2);
             break;
         default:
             break;
     }
-    return result;
+    return result.toString();
 }

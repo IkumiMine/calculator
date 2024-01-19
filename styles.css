@@ -46,11 +46,11 @@
 .function-keys {
     justify-content: space-between;
     width: 100%;
-    color: #fff;
     cursor: pointer;
 }
 
 .function-key {
+    color: #fff;
     background-color: #8549a7;
     border-radius: 8px;
     font-size: 2rem;
